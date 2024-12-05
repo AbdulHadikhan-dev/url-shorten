@@ -6,8 +6,12 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
+import { Toaster } from "@/components/ui/toaster";
+
+import { useToast } from "@/hooks/use-toast";
 
 const URLShortener = () => {
+  const { toast } = useToast();
   const [url, setUrl] = useState("");
   const [shortUrl, setShortUrl] = useState("");
   const [shorten, setShorten] = useState([]);
@@ -16,7 +20,7 @@ const URLShortener = () => {
     shortUrl: "",
   });
   const [loading, setLoading] = useState(false);
-  const [copied, setCopied] = useState('');
+  const [copied, setCopied] = useState("");
 
   const router = useRouter();
 
@@ -48,7 +52,21 @@ const URLShortener = () => {
       shortUrl,
     });
     setLoading(false);
-    alert(response.data.message);
+    console.log(response);
+    if (response.data.ok) {
+      toast({
+        variant: "default",
+        title: response.data.message,
+        description: "Your Shorten has been created and saved in database",
+      });
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: response.data.message,
+      });
+    }
+    fetchData();
   };
 
   async function fetchData() {
@@ -143,6 +161,7 @@ const URLShortener = () => {
                   </p>
                 )}
               </div>
+              <Toaster />
               <button
                 type="submit"
                 disabled={loading}
@@ -170,9 +189,11 @@ const URLShortener = () => {
                     </Button>
                     <Button
                       onClick={() => {
-                        navigator.clipboard.writeText(`${location.host}/${item.shorten}`);
+                        navigator.clipboard.writeText(
+                          `${location.host}/${item.shorten}`
+                        );
                         setCopied(item.shorten);
-                        setTimeout(() => setCopied(''), 2000);
+                        setTimeout(() => setCopied(""), 2000);
                       }}
                       className="ml-4 p-2 text-blue-600 hover:text-blue-700 focus:outline-none"
                       aria-label="Copy shortened URL"

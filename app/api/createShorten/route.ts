@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     const findDoc = await collection.findOne({ shorten: body?.shortUrl });
     console.log(findDoc);
     if (findDoc) {
-      return NextResponse.json({ message: "Shorten already exists" });
+      return NextResponse.json({ok: false, message: "Shorten already exists" });
     }
 
     const result = await collection.insertOne({
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       shorten: body?.shortUrl,
     });
 
-    return NextResponse.json({
+    return NextResponse.json({ok: true,
       message: "Create shorten successfully",
       result,
     });
