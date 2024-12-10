@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import clientPromise from "@/lib/db";
-// Assuming db.ts is in the lib folder
 
 export async function GET() {
   try {
