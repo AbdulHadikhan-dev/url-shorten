@@ -10,11 +10,19 @@ import { Toaster } from "@/components/ui/toaster";
 
 import { useToast } from "@/hooks/use-toast";
 
+
+interface ShortenItem {
+  _id: string;
+  url: string;
+  shorten: string;
+}
+
+
 const URLShortener = () => {
   const { toast } = useToast();
   const [url, setUrl] = useState("");
   const [shortUrl, setShortUrl] = useState("");
-  const [shorten, setShorten] = useState([]);
+  const [shorten, setShorten] = useState<ShortenItem[]>([]);
   const [error, setError] = useState({
     url: "",
     shortUrl: "",
@@ -180,7 +188,7 @@ const URLShortener = () => {
               </button>
             </form>
 
-            {shorten.length > 0 && shorten.map((item) => {
+            {shorten.map((item) => {
               return (
                 <div className="mt-8 p-4 bg-gray-50 rounded-lg" key={item?._id}>
                   <div className="flex items-center justify-between">

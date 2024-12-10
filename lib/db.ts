@@ -1,17 +1,19 @@
-/* eslint-disable prefer-const */
-import { MongoClient } from "mongodb";
+/* eslint-disable no-var */
+import { MongoClient } from 'mongodb';
 
-const uri = process.env.MONGO_URI || ""; // Your MongoDB URI from environment variables
+const uri = process.env.MONGODB_URI || ''; // Your MongoDB URI
+console.log(uri);
+
 const options = {};
 
-let client;
+let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
 
-if (!global._mongoClientPromise) {
+if (!globalThis._mongoClientPromise) {
   client = new MongoClient(uri, options);
-  global._mongoClientPromise = client.connect();
+  globalThis._mongoClientPromise = client.connect();
 }
-
-clientPromise = global._mongoClientPromise;
+// eslint-disable-next-line prefer-const
+clientPromise = globalThis._mongoClientPromise;
 
 export default clientPromise;
