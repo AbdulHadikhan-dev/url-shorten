@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import { MongoClient } from "mongodb";
 
 const uri = process.env.MONGO_URI || ""; // Your MongoDB URI from environment variables

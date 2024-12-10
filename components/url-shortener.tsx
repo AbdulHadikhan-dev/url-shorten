@@ -24,13 +24,17 @@ const URLShortener = () => {
 
   const router = useRouter();
 
-  const validateUrl = (input) => {
+  const validateUrl = (input: string) => {
     const urlPattern = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/;
     return urlPattern.test(input);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    const addMethod = shortUrl.replace(/\s{2,}/gi, " ").trim();
+    console.log(addMethod);
+
+    setShortUrl(addMethod);
     if (!url) {
       setError({ ...error, url: "Please enter a URL" });
       return;
@@ -39,7 +43,7 @@ const URLShortener = () => {
       setError({ ...error, url: "Please enter a valid URL" });
       return;
     }
-    if (shortUrl.length < 1) {
+    if (addMethod === " " || addMethod.length < 1) {
       return setError({ ...error, shortUrl: "Please enter a short URL" });
     }
     setLoading(true);
@@ -49,7 +53,7 @@ const URLShortener = () => {
     });
     const response = await axios.post("/api/createShorten", {
       url,
-      shortUrl,
+      shortUrl: addMethod,
     });
     setLoading(false);
     console.log(response);
@@ -176,9 +180,9 @@ const URLShortener = () => {
               </button>
             </form>
 
-            {shorten.map((item) => {
+            {shorten.length > 0 && shorten.map((item) => {
               return (
-                <div className="mt-8 p-4 bg-gray-50 rounded-lg" key={item._id}>
+                <div className="mt-8 p-4 bg-gray-50 rounded-lg" key={item?._id}>
                   <div className="flex items-center justify-between">
                     <Button
                       className="text-blue-700 font-medium break-all"

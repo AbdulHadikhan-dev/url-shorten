@@ -7,9 +7,14 @@ const Page = () => {
   const { redirect } = useParams();
 
   const redirectTo = async () => {
-    const getData = await axios.post("/api/getShorten", { shortUrl: redirect });
+    if (typeof redirect !== "string") {
+      window.location.href = "/";
+      return;
+    }
+    const params = redirect.replace(/%20/g, " ");
+    const getData = await axios.post("/api/getShorten", { shortUrl: params });
     console.log(getData);
-    
+
     if (getData.data.success) {
       window.location.href = getData.data.shorten.url;
       return;
@@ -20,6 +25,7 @@ const Page = () => {
 
   useEffect(() => {
     redirectTo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return <div className="min-h-[60vh]">{redirect}</div>;
 };

@@ -9,11 +9,6 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <div className="flex-shrink-0 flex items-center">
-            {/* <img
-              className="h-8 w-auto"
-              src="images.unsplash.com/photo-1614332287897-cdc485fa562d?w=128&h=128&fit=crop"
-              alt="Logo"
-            /> */}
             <span className="ml-2 text-xl font-bold text-gray-800">URLify</span>
           </div>
 
